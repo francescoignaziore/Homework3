@@ -1,0 +1,289 @@
+---
+title: "MA 415/ MA615 
+        HW 3 Section 1 project"
+output: ioslides_presentation
+fontsize: 10pt
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Team members
+
+- Yue Wu 
+- Yin Chia Huang 
+- Francesco Ignazio Re
+
+## Outline
+
+- Introduction
+- Data set Visualization & Analysis
+- Statistic Analysis
+- Time Series & Analysis
+- Conclusion
+
+## Introduction
+
+Apprehensions at the US-Mexico border have declined to near-historic lows over the last few years.
+	The objective of this report is to give a deeper insight on this change that has been occuring.
+	Through the analysis of the data collected by the U.S. Customs and Border Protection through the years,
+	we intend to shed light on the general trend of this phenomenon, focusing on how factors such as time and place have influenced the given outcome.
+
+```{r include=FALSE}
+# Raw Data
+PB2010 <- read.csv("PB2010.csv")
+PB2017 <- read.csv("PB2017.csv")
+```
+
+
+## Overview of 2010 Apprehensions
+The gray dots are Sector "Tucson", which had the most unstable number of apprehensions. And it also contributed the most apprehensions in 2010. 
+```{r}
+#PB2010 <- read.csv("PB2010.csv")
+plot(PB2010$Month, PB2010$Apprehensions, col = PB2010$Sector)
+
+
+```
+
+## Overview of 2017 Apprehensions
+The pink dots are Sector "Rio Grande Valley" which contributed the most apprehensions in 2017. Notably,apprehensions dramatically increased from Sep to Oct.
+
+```{r}
+#PB2017 <- read.csv("PB2017.csv")
+plot(PB2017$Month, PB2017$Apprehensions, col = PB2017$Sector)
+
+
+```
+
+
+```{r include=FALSE}
+#reading and setting up the 2010 apprehension data set
+ap10 <- read.csv("BP apprehensions 2010.csv")
+cities <- ap10[,1]
+ap10 <- ap10[-1]
+rownames(ap10) <- cities
+ap10 <- cbind(ap10[4:12],ap10[1:3])
+SumCol10 <- colSums(Filter(is.numeric, ap10))
+
+#reading and setting up the 2017 apprehension data set
+ap17 <- read.csv("BP Apprehensions 2017_Windows.csv")
+ap17 <- ap17[-c(1,2,15)]
+ap17 <- cbind(ap17[4:12],ap17[1:3])
+rownames(ap17) <- cities
+SumCol17 <- colSums(Filter(is.numeric, ap17))
+
+#Creating matrixes needed for the bar plot graphs:
+
+#1) Creating a matrix containing the Sum of the Columns of each data set
+CmbColS <- rbind((SumCol10),(SumCol17))
+#2) Creating a matrix containing the Sum of the Rows of each data set 
+CmbRowS <- rbind(rowSums(ap10), rowSums(ap17))
+
+#reading and setting up the 17-years apprehenesions data set
+msum  <- read.csv("BP monthly summaries.csv", stringsAsFactors = FALSE)
+years <- msum[c(1)]
+msum  <- msum[-c(1)]
+rownames(msum) <- as.vector(t(years))
+msum
+msum <- cbind(msum[4:12], msum[1:3])
+msum<-msum[18:1,]
+ts3 <- ts(as.vector(unlist(t(msum))),frequency = 12, start=c(2000,1))
+
+
+
+```
+
+
+## 2010 v.s 2017 Apprehensions by month  
+While apprehensions tend to decrease during the winter months, we can see an obvious increase in Nov and Dec from 2010 to 2017.
+```{r echo=FALSE}
+barplot(CmbColS,
+        beside=TRUE, 
+        las=2, 
+        main = "Apprehensions by month",
+        cex.lab =1.5,
+        col = c("orange","red") )
+legend("topright",
+       c("Apprehensions in 2010","Apprehensions in 2017"),
+       cex=0.8,
+       bty="n",
+       fill=c("orange","red") )
+
+```
+
+## 2010 v.s 2017 Apprehensions by sector
+The greatest change has occured in Tuscon, the area with the highest number of apprehensions in the 2010, that observed a drop of over the 80% according to the data collected in 2017.
+```{r echo=FALSE}
+barplot(CmbRowS,
+        beside=TRUE, 
+        las=2, main = "Apprehensions by sector", 
+        cex.lab =1.5, 
+        col = c("orange","red") )
+legend("topleft",
+       c("Apprehensions in 2010","Apprehensions in 2017"),
+       cex=0.8,
+       bty="n",
+       fill=c("orange","red") )
+
+
+```
+
+## Conclusion (1)
+From 2010 to 2017, the U.S. Customs and Border Pro- tection saw an overall 36 percent decrease in individuals apprehended while trying to enter the country illegally.
+Taking into consideration the months and the sectors where the apprehensions respectively in 2010 and 2017 occurred, we can see that the change has been charac- terized by a major drop in certain months and certain places rather then by a constant decline everywhere.   
+
+## Statistic Analysis (1)
+###Use simple statistical tests to compare the sector with the most apprehensions for 2010 and with the sector with the most apprehensions in 2017. Has there been a change in the maximum?
+
+--- 
+
+#### *2010 max-sum sector: No.8 Tuscon*
+```{r, echo=FALSE}
+
+#function to get t-tests for by-sector comparison
+by_sector.t <- function(y){
+  
+  t.test(as.numeric(ap10[y,]), as.numeric(ap17[y,]), paired = TRUE)
+}
+# T-test on the sector 8 Tucson (The most trafficated sector in 2010)
+by_sector.t(8)
+
+```
+######**t test:** p= 0.072 > 0.05  
+######**Conclusion:** We cannot reject the null hypothesis that Tuscon has equal means in 2017 from 2010.  
+######**Interpretation:** Tuscon does not play a critical role in the fluctuations of apprehensions between in 2010 and in 2017.  
+
+---
+
+#### *2017 max-sum sector: No.6 Rio Grande Valley*
+```{r, echo=FALSE}
+# sector with max yearly sum in 2017 --> test on max-apprehension sector changes
+by_sector.t(6)
+```
+######**t test:** p= 0.00 < 0.05  
+######**Conclusion:** We can reject the null hypothesis. RGV has significantly different means in 2010 from 2017, with 95% confidence.  
+######**Interpretation:** RGV plays a critical role in the fluctuations of apprehensions between in 2010 and in 2017.  
+
+## Statistic Analysis (2) 
+###Testing the hyphotesis for which the three months with apprehension peak in one year are equal in mean of the same months in the other. 
+
+---
+
+#### *Peak in 2010: March, April, May*
+```{r, echo=FALSE}
+x17 <- msum[1,]
+x10 <- msum[8,]
+x17 <- x17[6:8]
+x10 <- x10[6:8]
+t.test(as.numeric(x10), as.numeric(x17), paired = TRUE)
+```
+######**t test:** p= 0.014 < 0.05  
+######**Conclusion:** We can reject the null hypothesis. March - May 2010 means are significantly different from those in 2017, with 95% confidence.  
+######**Interpretation:** The peak in 2010 is significantly different in value from the same months in 2017. The test result correspond with the wide boxplot trend.    
+
+---
+
+#### *Peak in 2017: October, November, December*
+```{r, echo=FALSE}
+#Testing the hyphotesis for which the three most trafficated months in 2017 are equal in mean to the 
+#same months in 2010
+x17 <- msum[1,]
+x10 <- msum[8,]
+x17 <- x17[2:4]
+x10 <- x10[2:4]
+t.test(as.numeric(x17), as.numeric(x10), paired = TRUE)
+```
+######**t test:** p= 0.276 > 0.05  
+######**Conclusion:** We cannot reject the null hypothesis. Oct - Dec 2017 means are not significantly different from those in 2010.  
+######**Interpretation:** The peak in 2017 is not significantly different in value from the same months in 2010. The test result correspond with the narrow boxplot trend during those months. However, the small degrees of freedom makes the test less reliable. 
+
+## Time series graph  
+######The number apprehnsions dropped.It was a sign of decreased traffic of illegal immigrants. 
+
+
+```{r echo=FALSE}
+#Plot the time Series Graph
+ts.plot(ts3,main="Time Series from 2010 to 2017", gpars=list(xlab="year", ylab="Apprehensions", lty=c(1:3)))
+
+#create data for calculating the annual means and draw the means line
+ts3.1<-as.vector(ts3)
+
+
+for (i in 1:18 ){
+  if (i == 1){
+    from <- i
+    to <- 12
+    annualMeans <- c(mean(ts3.1[from :to]))
+  }  
+  else{
+    from <- 1 + to
+    to <- i*12
+  }  
+  annualMean<- mean(ts3.1[from: to])
+  #print(annualMean)
+  annualMeans <- append(annualMeans, annualMean)
+  segments(1999+i,annualMean,2000+i,annualMean, col = "blue",lwd=2)
+}
+annualMeans <- annualMeans[-1]  
+
+## add text labels (year)
+text(0.5+seq(from = 2000, to = 2017, by = 1),annualMeans[1:18]+6000,labels=2000:2017, cex=0.7, col = rgb(.9,  0, .7, .5) , font=2)
+## add legend
+legend('topright', col=c(rgb(0,0,0),"blue"), lty=1, lwd=2, 
+       legend=c("Monthly apprehensions", "Annual averages"), bg='white')
+
+
+```
+
+## Time series analysis (1)
+Box plot across months will give us a sense on seasonal effect. We can see that the number of apprehension in March has the biggest range and highest median.
+
+```{r echo=FALSE}
+# Box plot across months will give us a sense on seasonal effect 
+boxplot(ts3~cycle(ts3))
+```
+
+
+##Time series analysis (2)
+######There is an obvious seasonal fluctuation in the time series graph. A reasonable explanation is weather. The apprehensions tend to decrease during the winter months.But the decreasing trend implied that the administration's early efforts to thwart the illegal aliens problems have an effect in the long run. 
+```{r echo=FALSE}
+# Decompostion of multiplicative time series
+timeseriescomponents <- decompose(ts3, type="multiplicative")
+
+#timeseriescomponents
+plot(timeseriescomponents)
+
+```
+
+
+## Time series analysis (3)
+Month plot graph displays the time series plot for each month from 2000 to 2017. The shape of each month is very similar with different magnitudes. We need to do further research to find the cause of two peaks and troughs during this 17 years. This may explain the factor affecting apprehensions.  
+```{r}
+monthplot(ts3, ylab= "Apprehensions" )
+```
+
+## Time series prediction
+Using ARIMA Model to predict future apprehensions
+```{r}
+fit <- arima(ts3, order=c(1,0,0), list(order=c(2,1,0), period=12))
+fore <- predict(fit, n.ahead=24)
+
+#  error bounds at 95% confidence level
+U <- fore$pred + 2*fore$se
+L <- fore$pred - 2*fore$se
+ts.plot(ts3, fore$pred, U, L, col=c(1,2,4,4), lty = c(1,1,2,2))
+legend("topleft", c("Actual", "Forecast", "Error Bounds (95% Confidence)"), col=c(1,2,4), lty=c(1,1,2))
+
+```
+
+## Conclusion
+
+## Reference
+<br> - https://a-little-book-of-r-for-time-series.readthedocs.io/en/latest/src/timeseries.html#time-series-analysis
+<br> - http://www2.hawaii.edu/~fuleky/econ427/6_Time_series_decomposition.html#1
+<br> - https://rstudio-pubs-static.s3.amazonaws.com/254962_6d87741d9ad64a32b6e47d684875dde9.html
+<br> - https://www.datascience.com/blog/introduction-to-forecasting-with-arima-in-r-learn-data-science-tutorials
+<br> - http://www.washingtonexaminer.com/border-apprehensions-hit-17-year-low-in-march/article/2619338
+<br> - http://ucanalytics.com/blogs/arima-models-manufacturing-case-study-example-part-3/
+
