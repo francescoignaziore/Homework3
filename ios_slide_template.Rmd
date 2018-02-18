@@ -48,7 +48,8 @@ From 2010 to 2017, the U.S. Customs and Border Protection saw an overall 36 perc
 The gray dots are Sector "Tucson", which had the most unstable number of apprehensions and was the sector who contributed the most in the apprehensions of 2010. 
 ```{r}
 #PB2010 <- read.csv("PB2010.csv")
-plot(PB2010$Month, PB2010$Apprehensions, col = PB2010$Sector)
+plot(PB2010$Month, PB2010$Apprehensions, col = PB2010$Sector, xlab = "Months", ylab = "Apprehensions")
+
 
 
 ```
@@ -58,7 +59,14 @@ The pink dots are Sector "Rio Grande Valley" which contributed the most in the a
 
 ```{r}
 #PB2017 <- read.csv("PB2017.csv")
-plot(PB2017$Month, PB2017$Apprehensions, col = PB2017$Sector)
+
+plot(PB2017$Month, PB2017$Apprehensions, col = PB2017$Sector, xlab = "Months", ylab = "Apprehensions")
+
+legend("topright",
+          c("Apprehensions in Rio Grande Valley"),
+          cex=0.8,
+          bty="n",
+          fill=c("pink"))
 
 
 ```
@@ -263,7 +271,7 @@ boxplot(ts3~cycle(ts3))
 ```
 
 
-##Time series analysis (2)   {.smaller}
+##Time series analysis (2){.smaller}
 
 From this time series, we can see that there seems to be seasonal variation in the number of apprehensions per month. It seems that this time series could probably be described using an additive model or multiplicative model. Because the seasonal fluctuations are decreasing in size over time and seems to depend on the level of the time series, we choose multiplicative model.
 
