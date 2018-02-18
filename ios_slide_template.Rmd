@@ -9,10 +9,10 @@ fontsize: 10pt
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Team members
+## Team members|Group 6
 
 - Yue Wu 
-- Yin Chia Huang 
+- YinChia Huang 
 - Francesco Ignazio Re
 
 ## Outline
@@ -35,10 +35,6 @@ Apprehensions at the US-Mexico border have declined to near-historic lows over t
 PB2010 <- read.csv("PB2010.csv")
 PB2017 <- read.csv("PB2017.csv")
 ```
-
-## Descriptive Data Analysis on sectors and months
-From 2010 to 2017, the U.S. Customs and Border Protection saw an overall 36 percent decrease in apprehensions for illegal entry to the country. The plots show a significant different trend of monthly apprehension changes between the two years. Sectors also exhibit different patterns of changes from each other.
-
 
 ## Overview of 2010 Apprehensions 
 The gray dots are Sector "Tucson", which had the most unstable number of apprehensions and was the sector who contributed the most in the apprehensions of 2010. 
@@ -152,7 +148,7 @@ legend("topright",
 
 ```
 
-## 2010 v.s 2017 Apprehensions by sector
+## 2010 v.s 2017 Apprehensions by sector 
 The greatest change has occured in Tuscon, the area with the highest number of apprehensions in the 2010, that observed a drop of over the 80% according to the data collected in 2017.
 ```{r echo=FALSE}
 barplot(CmbRowS,
@@ -169,8 +165,8 @@ legend("topleft",
 
 ```
 
-
-
+## Descriptive Data Analysis 
+From 2010 to 2017, the U.S. Customs and Border Protection saw an overall 36 percent decrease in apprehensions for illegal entry to the country. The plots show a significant different trend of monthly apprehension changes between the two years. Sectors also exhibit different patterns of changes from each other.
 
 ## Statistic Analysis(1)
 ###Let's use simple statistical tests to compare the change witnessed in the the sector with the most apprehensions in 2010 and 2017.
@@ -321,10 +317,10 @@ The significant decline of border apprehensions since 2000 mainly come from chan
 
 
 ## Reference
-<br> - https://a-little-book-of-r-for-time-series.readthedocs.io/en/latest/src/timeseries.html#time-series-analysis
-<br> - http://www2.hawaii.edu/~fuleky/econ427/6_Time_series_decomposition.html#1
-<br> - https://rstudio-pubs-static.s3.amazonaws.com/254962_6d87741d9ad64a32b6e47d684875dde9.html
-<br> - https://www.datascience.com/blog/introduction-to-forecasting-with-arima-in-r-learn-data-science-tutorials
-<br> - http://www.washingtonexaminer.com/border-apprehensions-hit-17-year-low-in-march/article/2619338
-<br> - http://ucanalytics.com/blogs/arima-models-manufacturing-case-study-example-part-3/
+[Using R for Time Series Analysis](https://a-little-book-of-r-for-time-series.readthedocs.io/en/latest/src/timeseries.html#time-series-analysis)
+<br> [Time series decomposition](http://www2.hawaii.edu/~fuleky/econ427/6_Time_series_decomposition.html#1) 
+<br> [Time Series Analysis in R](https://rstudio-pubs-static.s3.amazonaws.com/254962_6d87741d9ad64a32b6e47d684875dde9.html) 
+<br> [Introduction to Forecasting with ARIMA in R](https://www.datascience.com/blog/introduction-to-forecasting-with-arima-in-r-learn-data-science-tutorials) 
+<br> [Border apprehensions hit 17-year low in March](http://www.washingtonexaminer.com/border-apprehensions-hit-17-year-low-in-march/article/2619338)
+
 
