@@ -1,17 +1,22 @@
 
 
-
 ---
 title: "US Border Patrol Apprehensions"
 author: "Yin-Chia Huang, Francesco Re, Emma Yue Wu (Group 6)"
 date: "2/11/2018"
 subtitle: "MA415 Spring 2018, Assignment 3"
 runtime: shiny
-output: html_document
+output:
+  html_document:
+    theme: journal
+
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(shinythemes)
+
+
 library(shiny)
 
 #monthly apprehensions by year
@@ -102,8 +107,8 @@ shinyApp(
 # Define UI for dataset viewer app ----
 ui <- fluidPage(
   
-  # # App title ----
-  # titlePanel("BP Apprehensions"),
+theme = shinytheme("journal"),
+ titlePanel("BP Apprehensions"),
   
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
@@ -187,10 +192,6 @@ server <- function(input, output) {
 
 
 
-
-
-
-##On sectors and months:
 From 2010 to 2017, the U.S. Customs and Border Protection saw an overall 36 percent decrease in apprehensions for illegal entry to the country. The plots show a significant different trend of monthly apprehension changes between the two years. Sectors also exhibit different patterns of changes from each other. The effects of both time and sector on apprehension distribution can be examined by the following 𝜒2 tests:
 
 1)  Chi-squared test on the 2010 apprehensions by months and sectors.
@@ -224,6 +225,9 @@ legend("topright",
 
 
 ```
+
+
+
 In fact, the biggest difference between 2010 and 2017 distribution come from January through June. The most tracated months in 2010, such as March, April and May are also the ones with the biggest decline in 2017. A possible explanation of this decline is related to the change of Presidency in the US. With Trump administration laying out tightened immigration policy, it is likely that more immigrants hesitate to enter the country, legally or illegally. Similarly, looking by sector, Tuscon exhibits the biggest difference in apprehension between 2010 and 2017. Despite having the most apprehensions in the 2010, Tuscon experienced a decline over 80% in 2017. On the other hand, Rio Grande Valley, which contributed the most apprehensions in 2017, experienced dramatically increased from Sep to Oct. 
 While some sectors experience increases in apprehension from 2010 to 2017, the steep decline in Tucson overpowers those rises and leads to the overall decline in the country’s apprehensions.
 
