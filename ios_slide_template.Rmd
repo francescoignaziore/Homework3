@@ -40,17 +40,22 @@ PB2017 <- read.csv("PB2017.csv")
 From 2010 to 2017, the U.S. Customs and Border Protection saw an overall 36 percent decrease in apprehensions for illegal entry to the country. The plots show a significant different trend of monthly apprehension changes between the two years. Sectors also exhibit different patterns of changes from each other.
 
 
-
-
-
-
 ## Overview of 2010 Apprehensions 
 The gray dots are Sector "Tucson", which had the most unstable number of apprehensions and was the sector who contributed the most in the apprehensions of 2010. 
 ```{r}
-#PB2010 <- read.csv("PB2010.csv")
-plot(PB2010$Month, PB2010$Apprehensions, col = PB2010$Sector, xlab = "Months", ylab = "Apprehensions")
+plot(PB2010$Month, PB2010$Apprehensions, type = "p",col = PB2010$Sector, main = "Apprehensions by month in 2010",ylab= "Apprehensions", xlab= "Month" )
+legend("topright",inset=c(0.22,0),
+       c("Big Bend","Del Rio", "El Centro","El Paso","Laredo","Rio Grande Valley", "San Diego", "Tucson","Yuma"),
+       cex=0.8,
+       bty="n",
+       fill=c("gray0","red","green","blue","cyan", "magenta","yellow","gray", "black"))
 
 
+#  install.packages("tidyverse")
+#  library(tidyverse)
+# #
+#  ggplot(data = PB2010) + 
+#    geom_point(mapping = aes(x = Month, y = Apprehensions , color = Sector))
 
 ```
 
@@ -58,16 +63,19 @@ plot(PB2010$Month, PB2010$Apprehensions, col = PB2010$Sector, xlab = "Months", y
 The pink dots are Sector "Rio Grande Valley" which contributed the most in the apprehensions of 2017. Notably,apprehensions dramatically increased from Sep to Oct.
 
 ```{r}
-#PB2017 <- read.csv("PB2017.csv")
+plot(PB2017$Month, PB2017$Apprehensions, col = PB2017$Sector, main = "Apprehensions by month in 2017",ylab= "Apprehensions", xlab= "Month")
 
-plot(PB2017$Month, PB2017$Apprehensions, col = PB2017$Sector, xlab = "Months", ylab = "Apprehensions")
+legend("topleft",inset=c(0.05,0),
+       c("Big Bend","Del Rio", "El Centro","El Paso","Laredo","Rio Grande Valley", "San Diego", "Tucson","Yuma"),
+       cex=0.8,
+       bty="n",
+       fill=c("gray0","red","green","blue","cyan", "magenta","yellow","gray", "black"))
 
-legend("topright",
-          c("Apprehensions in Rio Grande Valley"),
-          cex=0.8,
-          bty="n",
-          fill=c("pink"))
-
+# install.packages("tidyverse")
+# library(tidyverse)
+# 
+# ggplot(data = PB2017) + 
+#   geom_point(mapping = aes(x = Month, y = Apprehensions , color = Sector))
 
 ```
 
@@ -164,7 +172,7 @@ legend("topleft",
 
 
 
-## Statistic Analysis 
+## Statistic Analysis(1)
 ###Let's use simple statistical tests to compare the change witnessed in the the sector with the most apprehensions in 2010 and 2017.
 
 --- 
@@ -224,9 +232,10 @@ t.test(as.numeric(xa10), as.numeric(xa17), paired = TRUE)
 ######**Conclusion:** We cannot reject the null hypothesis. Oct - Dec 2017 means are not significantly different from those in 2010.  
 ######**Interpretation:** The peak in 2017 is not significantly different in value from the same months in 2010. The test result correspond with the narrow boxplot trend during those months. However, the small degrees of freedom makes the test less reliable. 
 
-## Time series graph  
+## Time series graph{.smaller} 
 
-######The number apprehensions dropped considerably over the years.
+The time series plot shows that from 2000, there has been continuous decline, from a high of over 1.6 million in 2000 to around 300,000 in 2017. Over these years, US policies on immigration control have been rapidly developed, leading to potential correlation with the change in apprehensions.
+
 
 ```{r echo=FALSE}
 #Plot the time Series Graph
@@ -267,13 +276,12 @@ Box plot across months will give us a sense on seasonal effect. We can see that 
 
 ```{r echo=FALSE}
 # Box plot across months will give us a sense on seasonal effect 
-boxplot(ts3~cycle(ts3))
+boxplot(ts3~cycle(ts3),ylab= "Apprehensions", xlab= "Month", main="Monthly Box plot " )
 ```
 
 
 ##Time series analysis (2){.smaller}
-
-From this time series, we can see that there seems to be seasonal variation in the number of apprehensions per month. It seems that this time series could probably be described using an additive model or multiplicative model. Because the seasonal fluctuations are decreasing in size over time and seems to depend on the level of the time series, we choose multiplicative model.
+In addition to the overall decline, seasonal fluctuation is another noticeable trend in the plots. A reasonable explanation is that harsh weather decreases attempts of illegal entry while keeping other factors controlled. The seasonal effects cause the changes among months, but plays little role in the rapid changes among years.
 
 ```{r echo=FALSE}
 # Decompostion of multiplicative time series
@@ -286,9 +294,9 @@ plot(timeseriescomponents)
 
 
 ## Time series analysis (3)
-Month plot graph displays the time series plot for each month from 2000 to 2017. The shape of each month is very similar with different magnitudes. We need to do further research to find the cause of two peaks and troughs during this 17 years. This may explain the factor affecting apprehensions.  
+Month plot graph displays the time series plot for each month from 2000 to 2017. The shape of each month is very similar with different magnitudes.  
 ```{r}
-monthplot(ts3, ylab= "Apprehensions" )
+monthplot(ts3, ylab= "Apprehensions", xlab= "Month", main="Monthly plot with monthly mean")
 ```
 
 ## Time series prediction
