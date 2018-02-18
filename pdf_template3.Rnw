@@ -300,7 +300,7 @@ boxplot(ts3~cycle(ts3))
 
 {
 
-  \includegraphics[width=0.4\textwidth]{pdf_template3-fig4}
+  \includegraphics[width=0.5\textwidth]{pdf_template3-fig4}
   \caption{Time series of Apprehension from 2000 to 2017}
 }
 
@@ -313,7 +313,7 @@ Through Fig.4, we can see that from 2000, there's been a steady decrease in appr
 
 {
 
-  \includegraphics[width=0.4\textwidth]{pdf_template3-fig3}
+  \includegraphics[width=0.5\textwidth]{pdf_template3-fig3}
   \caption{Time series of Apprehension from 2000 to 2017}
 }
 
