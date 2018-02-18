@@ -37,7 +37,7 @@ PB2017 <- read.csv("PB2017.csv")
 ```
 
 
-## Overview of 2010 Apprehensions
+## Overview of 2010 Apprehensions 
 The gray dots are Sector "Tucson", which had the most unstable number of apprehensions. And it also contributed the most apprehensions in 2010. 
 ```{r}
 #PB2010 <- read.csv("PB2010.csv")
@@ -89,6 +89,23 @@ msum
 msum <- cbind(msum[4:12], msum[1:3])
 msum<-msum[18:1,]
 ts3 <- ts(as.vector(unlist(t(msum))),frequency = 12, start=c(2000,1))
+
+
+# 3 MONTHS PEAK 2010
+#Testing the hyphotesis for which the three most trafficated months'observations in 2010 are equal in mean to the 
+#same months in 2017
+x10 <- msum[11,]
+x17 <- msum[18,]
+xa10 <- x10[10:12]
+xa17 <- x17[10:12]
+
+
+# 3 MONTHS PEAK 2017
+#Testing the hyphotesis for which the three most trafficated months'observations in 2017 are equal in mean to the 
+#same months in 2010
+
+xb17 <- x17[3:5]
+xb10 <- x10[3:5]
 
 
 
@@ -146,6 +163,7 @@ by_sector.t <- function(y){
   
   t.test(as.numeric(ap10[y,]), as.numeric(ap17[y,]), paired = TRUE)
 }
+
 # T-test on the sector 8 Tucson (The most trafficated sector in 2010)
 by_sector.t(8)
 
@@ -172,11 +190,9 @@ by_sector.t(6)
 
 #### *Peak in 2010: March, April, May*
 ```{r, echo=FALSE}
-x17 <- msum[1,]
-x10 <- msum[8,]
-x17 <- x17[6:8]
-x10 <- x10[6:8]
-t.test(as.numeric(x10), as.numeric(x17), paired = TRUE)
+
+
+t.test(as.numeric(xb10), as.numeric(xb17), paired = TRUE)
 ```
 ######**t test:** p= 0.014 < 0.05  
 ######**Conclusion:** We can reject the null hypothesis. March - May 2010 means are significantly different from those in 2017, with 95% confidence.  
@@ -186,13 +202,9 @@ t.test(as.numeric(x10), as.numeric(x17), paired = TRUE)
 
 #### *Peak in 2017: October, November, December*
 ```{r, echo=FALSE}
-#Testing the hyphotesis for which the three most trafficated months in 2017 are equal in mean to the 
-#same months in 2010
-x17 <- msum[1,]
-x10 <- msum[8,]
-x17 <- x17[2:4]
-x10 <- x10[2:4]
-t.test(as.numeric(x17), as.numeric(x10), paired = TRUE)
+
+t.test(as.numeric(xa10), as.numeric(xa17), paired = TRUE)
+
 ```
 ######**t test:** p= 0.276 > 0.05  
 ######**Conclusion:** We cannot reject the null hypothesis. Oct - Dec 2017 means are not significantly different from those in 2010.  
