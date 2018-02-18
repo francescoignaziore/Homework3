@@ -36,9 +36,16 @@ PB2010 <- read.csv("PB2010.csv")
 PB2017 <- read.csv("PB2017.csv")
 ```
 
+## Descriptive Data Analysis on sectors and months
+From 2010 to 2017, the U.S. Customs and Border Protection saw an overall 36 percent decrease in apprehensions for illegal entry to the country. The plots show a significant different trend of monthly apprehension changes between the two years. Sectors also exhibit different patterns of changes from each other.
+
+
+
+
+
 
 ## Overview of 2010 Apprehensions 
-The gray dots are Sector "Tucson", which had the most unstable number of apprehensions. And it also contributed the most apprehensions in 2010. 
+The gray dots are Sector "Tucson", which had the most unstable number of apprehensions and was the sector who contributed the most in the apprehensions of 2010. 
 ```{r}
 #PB2010 <- read.csv("PB2010.csv")
 plot(PB2010$Month, PB2010$Apprehensions, col = PB2010$Sector)
@@ -47,7 +54,7 @@ plot(PB2010$Month, PB2010$Apprehensions, col = PB2010$Sector)
 ```
 
 ## Overview of 2017 Apprehensions
-The pink dots are Sector "Rio Grande Valley" which contributed the most apprehensions in 2017. Notably,apprehensions dramatically increased from Sep to Oct.
+The pink dots are Sector "Rio Grande Valley" which contributed the most in the apprehensions of 2017. Notably,apprehensions dramatically increased from Sep to Oct.
 
 ```{r}
 #PB2017 <- read.csv("PB2017.csv")
@@ -113,7 +120,7 @@ xb10 <- x10[3:5]
 
 
 ## 2010 v.s 2017 Apprehensions by month  
-While apprehensions tend to decrease during the winter months, we can see an obvious increase in Nov and Dec from 2010 to 2017.
+The most trafficated months in 2010, such as March, April and May are also the ones with the biggest decline in 2017. 
 ```{r echo=FALSE}
 barplot(CmbColS,
         beside=TRUE, 
@@ -146,12 +153,11 @@ legend("topleft",
 
 ```
 
-## Conclusion (1)
-From 2010 to 2017, the U.S. Customs and Border Pro- tection saw an overall 36 percent decrease in individuals apprehended while trying to enter the country illegally.
-Taking into consideration the months and the sectors where the apprehensions respectively in 2010 and 2017 occurred, we can see that the change has been charac- terized by a major drop in certain months and certain places rather then by a constant decline everywhere.   
 
-## Statistic Analysis (1)
-###Use simple statistical tests to compare the sector with the most apprehensions for 2010 and with the sector with the most apprehensions in 2017. Has there been a change in the maximum?
+
+
+## Statistic Analysis 
+###Let's use simple statistical tests to compare the change witnessed in the the sector with the most apprehensions in 2010 and 2017.
 
 --- 
 
@@ -168,9 +174,9 @@ by_sector.t <- function(y){
 by_sector.t(8)
 
 ```
-######**t test:** p= 0.072 > 0.05  
-######**Conclusion:** We cannot reject the null hypothesis that Tuscon has equal means in 2017 from 2010.  
-######**Interpretation:** Tuscon does not play a critical role in the fluctuations of apprehensions between in 2010 and in 2017.  
+######**t test:** p= 6.324e-05 < 0.05  
+######**Conclusion:** We can reject the null hypothesis that Tuscon has equal means in 2017 from 2010.  
+######**Interpretation:** Tuscon does  play a critical role in the fluctuations of apprehensions between 2010 and in 2017.  
 
 ---
 
@@ -179,9 +185,9 @@ by_sector.t(8)
 # sector with max yearly sum in 2017 --> test on max-apprehension sector changes
 by_sector.t(6)
 ```
-######**t test:** p= 0.00 < 0.05  
-######**Conclusion:** We can reject the null hypothesis. RGV has significantly different means in 2010 from 2017, with 95% confidence.  
-######**Interpretation:** RGV plays a critical role in the fluctuations of apprehensions between in 2010 and in 2017.  
+######**t test:** p= 0.03167 < 0.05  
+######**Conclusion:** We can reject the null hypothesis. RGV has different means in 2010 from 2017, with 95% confidence.  
+######**Interpretation:** RGV plays a critical role in the fluctuations of apprehensions between in 2010 and in 2017, however not as much as the the sector Tuscon.
 
 ## Statistic Analysis (2) 
 ###Testing the hyphotesis for which the three months with apprehension peak in one year are equal in mean of the same months in the other. 
@@ -196,7 +202,7 @@ t.test(as.numeric(xb10), as.numeric(xb17), paired = TRUE)
 ```
 ######**t test:** p= 0.014 < 0.05  
 ######**Conclusion:** We can reject the null hypothesis. March - May 2010 means are significantly different from those in 2017, with 95% confidence.  
-######**Interpretation:** The peak in 2010 is significantly different in value from the same months in 2017. The test result correspond with the wide boxplot trend.    
+######**Interpretation:** The peak in 2010 is significantly different in value from the same months in 2017.     
 
 ---
 
@@ -206,13 +212,13 @@ t.test(as.numeric(xb10), as.numeric(xb17), paired = TRUE)
 t.test(as.numeric(xa10), as.numeric(xa17), paired = TRUE)
 
 ```
-######**t test:** p= 0.276 > 0.05  
+######**t test:** p= 0.081 < 0.05  
 ######**Conclusion:** We cannot reject the null hypothesis. Oct - Dec 2017 means are not significantly different from those in 2010.  
 ######**Interpretation:** The peak in 2017 is not significantly different in value from the same months in 2010. The test result correspond with the narrow boxplot trend during those months. However, the small degrees of freedom makes the test less reliable. 
 
 ## Time series graph  
-######The number apprehnsions dropped.It was a sign of decreased traffic of illegal immigrants. 
 
+######The number apprehensions dropped considerably over the years.
 
 ```{r echo=FALSE}
 #Plot the time Series Graph
@@ -257,8 +263,10 @@ boxplot(ts3~cycle(ts3))
 ```
 
 
-##Time series analysis (2)
-######There is an obvious seasonal fluctuation in the time series graph. A reasonable explanation is weather. The apprehensions tend to decrease during the winter months.But the decreasing trend implied that the administration's early efforts to thwart the illegal aliens problems have an effect in the long run. 
+##Time series analysis (2)   {.smaller}
+
+From this time series, we can see that there seems to be seasonal variation in the number of apprehensions per month. It seems that this time series could probably be described using an additive model or multiplicative model. Because the seasonal fluctuations are decreasing in size over time and seems to depend on the level of the time series, we choose multiplicative model.
+
 ```{r echo=FALSE}
 # Decompostion of multiplicative time series
 timeseriescomponents <- decompose(ts3, type="multiplicative")
@@ -289,7 +297,12 @@ legend("topleft", c("Actual", "Forecast", "Error Bounds (95% Confidence)"), col=
 
 ```
 
-## Conclusion
+## Conclusions
+
+The significant decline of border apprehensions since 2000 mainly come from changes in specific sectors, such as Rio Grande Valley, and time of a year, such as March to May. More research on political and economical factors can be done to further explain the causes.
+
+
+
 
 ## Reference
 <br> - https://a-little-book-of-r-for-time-series.readthedocs.io/en/latest/src/timeseries.html#time-series-analysis
